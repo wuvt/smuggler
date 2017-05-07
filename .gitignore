@@ -1,0 +1,6 @@
+venv/
+*.pyc
+*.swp
+__pycache__/
+funnel/config.json
+funnel/config.py
