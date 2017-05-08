@@ -1,5 +1,5 @@
 from flask import Flask
-from funnel import defaults
+from smuggler import defaults
 import os
 
 app = Flask(__name__)
@@ -11,7 +11,9 @@ if config_path.endswith('.py'):
 else:
     app.config.from_json(config_path, silent=True)
 
-from funnel.api import v1
+os.makedirs(app.config['TEMP_DIR'], exist_ok=True)
+
+from smuggler.api import v1
 
 
 def init_app():
