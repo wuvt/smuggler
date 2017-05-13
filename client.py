@@ -28,6 +28,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     for path in args['ALBUM']:
+        hg_uuid = uuid.uuid4()
         album_uuid = uuid.uuid4()
         for root, dirs, files in os.walk(path):
             for name in files:
@@ -36,7 +37,7 @@ if __name__ == "__main__":
                 if relpath[0] == '/':
                     relpath = relpath[1:]
                 endpoint = urljoin(args['--server'],
-                                   '/api/v1/holdings/{}/music/{}'.format(album_uuid, relpath))
+                                   '/api/v1/holding_groups/{}/{}/music/{}'.format(hg_uuid, album_uuid, relpath))
                 print("PUT {}".format(endpoint))
                 with open(fullpath, 'rb') as fh:
                     data = fh.read()
@@ -45,6 +46,7 @@ if __name__ == "__main__":
                         print("ERROR: {}".format(r.body))
 
         endpoint = urljoin(args['--server'], '/api/v1/holdings/{}/lock'.format(album_uuid))
+        print("PUT {}".format(endpoint))
         r = requests.put(endpoint)
         if r.status_code != 200:
             print("ERROR: {}".format(r.body))

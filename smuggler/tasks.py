@@ -19,6 +19,18 @@ def moss_create_track(hid, tmpfname, path):
             raise IOError("Got {} from moss".format(r.status_code))
 
 
+def moss_lock_holding(hid):
+    """
+    Locks the holding so that music files can't be modified without manual
+    intervention.
+    """
+    moss_uri = app.config['MOSS_URI']
+    endpoint = urljoin(moss_uri, join(str(hid), 'lock'))
+    r = requests.put(endpoint)
+    if r.status_code < 200 or r.status_code >= 300:
+        raise IOError("Got {} from moss".format(r.status_code))
+
+
 def _create_default_objects():
     """
     Creates a format and stack in impala if it doesn't already exist
