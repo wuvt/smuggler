@@ -30,7 +30,7 @@ def _put_resource(endpoint, fullpath=None, debug=True):
         r = requests.put(endpoint)
 
     if r.status_code < 200 or r.status_code >= 300:
-        print("ERROR: {}".format(r.body))
+        print("ERROR: {}".format(r.status_code))
 
 
 def upload_albumart(server, hid, fullpath, debug=True):
