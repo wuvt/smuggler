@@ -13,7 +13,7 @@ import os
 import requests
 import sys
 from os.path import split
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin, quote
 
 ALBUMART_FILENAMES = ['folder.jpg', 'cover.jpg', 'front.jpg']
 
@@ -46,6 +46,7 @@ def upload_track(server, hgid, hid, relpath, fullpath, debug=True):
     Upload the track at fullpath to the smuggler server for the specified hgid,
     hid, and relative path.
     """
+    relpath = quote(relpath)
     endpoint = urljoin(server, '/api/v1/holding_groups/{}/{}/music/{}'.format(hgid, hid, relpath))
     return _put_resource(endpoint, fullpath=fullpath, debug=debug)
 

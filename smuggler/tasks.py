@@ -1,6 +1,6 @@
 from os.path import join
 import requests
-from urllib.parse import urljoin
+from urllib.parse import urljoin, quote
 from smuggler import app
 
 
@@ -10,7 +10,7 @@ def moss_create_track(hid, tmpfname, path):
     fails, raises an exception.
     """
     moss_uri = app.config['MOSS_URI']
-    endpoint = urljoin(moss_uri, join(str(hid), 'music', path))
+    endpoint = urljoin(moss_uri, join(str(hid), 'music', quote(path)))
     with open(tmpfname, 'rb') as f:
         data = f.read()
         r = requests.put(endpoint, data=data)
