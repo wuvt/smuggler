@@ -4,7 +4,7 @@ from flask import jsonify, request, abort
 from smuggler.api.v1 import bp
 from smuggler import app
 from smuggler.tasks import moss_create_track, moss_lock_holding
-from smuggler.tasks import impala_create_track
+from smuggler.tasks import impala_create_track, moss_create_albumart
 import tempfile
 import os
 
@@ -29,6 +29,23 @@ def upload_track(hgid, hid, path):
     try:
         moss_create_track(hid, tmpfname, path)
         impala_create_track(hgid, hid, tmpfname, path)
+        os.unlink(tmpfname)
+    except:
+        abort(500)
+
+    return jsonify({'message': "ok"})
+
+
+@bp.route('/holdings/<uuid:hid>/albumart', methods=['POST', 'PUT'])
+def upload_albumart(hid):
+    tempfile.tempdir = app.config['TEMP_DIR']
+    f = tempfile.NamedTemporaryFile(delete=False, mode='wb')
+    tmpfname = f.name
+    f.write(request.data)
+    f.close()
+
+    try:
+        moss_create_albumart(hid, tmpfname)
         os.unlink(tmpfname)
     except:
         abort(500)
