@@ -133,6 +133,17 @@ class ImpalaSession:
             err = "Got {} from impala on holding creation".format(r.status_code)
             raise IOError(err)
 
+    def _create_track_metadata(self, track_id, path, item):
+        for key in item._fields.keys():
+            value = str(getattr(item, key))
+            data = {'key': key,
+                    'value': value,
+                    'track_id': track_id}
+            r = self.put('api/v1/track_metadata', data)
+            if r.status_code not in [200, 201, 409]:
+                err = "Got {} from impala on metadata creation".format(r.status_code)
+                raise IOError(err)
+
     def _create_track(self, hid, path, item):
         data = {'title': item.title,
                 'artist': item.artist,
@@ -161,3 +172,6 @@ class ImpalaSession:
         if r.status_code not in [200, 201, 409]:
             err = "Got {} from impala on track creation".format(r.status_code)
             raise IOError(err)
+
+        track_id = r.json()['id']
+        self._create_track_metadata(track_id, path, item)
