@@ -12,7 +12,7 @@ import os
 
 @bp.route('/')
 def api_version_info():
-    return jsonify({'stable': False})
+    return jsonify({'stable': True})
 
 
 @bp.route('/holding_groups/<uuid:hgid>/<uuid:hid>/music/<path:path>',
