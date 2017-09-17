@@ -61,3 +61,28 @@ def upload_albumart(hid):
 def lock_holding(hid):
     moss_lock_holding(hid)
     return jsonify({'message': "ok"})
+
+
+@bp.route('/holdings/<uuid:hid>/source', methods=['POST'])
+def set_holding_torrent_hash(hid):
+    session = ImpalaSession(app.config['IMPALA_SERVER']['uri'],
+                            app.config['IMPALA_SERVER']['username'],
+                            app.config['IMPALA_SERVER']['password'])
+    session.set_source_metadata(hid, request.form)
+
+    return jsonify({'message': 'ok'})
+
+
+@bp.route('/torrents/<infohash>', methods=['GET', 'HEAD'])
+def get_torrent(infohash):
+    infohash = infohash.lower()
+    session = ImpalaSession(app.config['IMPALA_SERVER']['uri'],
+                            app.config['IMPALA_SERVER']['username'],
+                            app.config['IMPALA_SERVER']['password'])
+
+    result = session.get_holding_from_torrent(infohash)
+
+    if result:
+        return jsonify({'holding': result})
+    else:
+        abort(404)

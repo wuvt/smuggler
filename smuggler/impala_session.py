@@ -43,6 +43,46 @@ class ImpalaSession:
         return requests.put(endpoint, data=resource,
                             cookies={'session': self.session})
 
+    def patch(self, endpoint, data):
+        endpoint = urljoin(self.uri, endpoint)
+        if not self.session:
+            self.login()
+        return requests.patch(endpoint, data=data,
+                              cookies={'session': self.session})
+
+    def set_source_metadata(self, hid, metadata):
+        """
+        Sets the source metadata for a Holding. Only three fields may be
+        modified: torrent_hash, source_url, and source_desc.
+        """
+        data = {}
+        hid = str(hid)
+        for key in ['torrent_hash', 'source_url', 'source_desc']:
+            if key in metadata:
+                data[key] = metadata[key]
+
+        if 'torrent_hash' in data:
+            data['torrent_hash'] = data['torrent_hash'].lower()
+
+        r = self.patch('api/v1/holdings/' + hid, data=data)
+        if r.status_code < 200 or r.status_code >= 300:
+            raise IOError(str(r.status_code) + ": Failed to set src metadata")
+
+    def get_holding_from_torrent(self, infohash):
+        """
+        Return the UUID of a Holding, if it exists. Else, return null.
+        """
+        if not infohash.isalnum():
+            raise ValueError("infohash must be alphanumeric")
+        infohash = infohash.lower()
+
+        r = self.get('api/v1/holdings/search?torrent_hash=' + infohash)
+        results = r.json()['results']
+        if not results:
+            return None
+        else:
+            return results[0]['id']
+
     def create_track(self, hgid, hid, tmpfname, path):
         """
         Creates the data corresponding to the track in impala associated with
