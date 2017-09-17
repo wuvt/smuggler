@@ -3,7 +3,8 @@ smuggler
 
 smuggler is the Smart Music Upload Gadget for Gathered and Looted Electronic
 Recordings. This is a user-facing web service that allows music to be imported
-into impala's catalog and [moss](https://github.com/wuvt/moss)'s file store.
+into [impala](https://github.com/wuvt/impala)'s catalog and
+[moss](https://github.com/wuvt/moss)'s file store.
 
 
 Usage
