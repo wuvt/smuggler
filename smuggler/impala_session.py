@@ -65,10 +65,10 @@ class ImpalaSession:
             data['torrent_hash'] = data['torrent_hash'].lower()
 
         if 'source_url' in data:
-            if not urlparse(data['source_url']).scheme:
-                raise ValueError('source_url must be a URL')
+            if urlparse(data['source_url']).scheme not in ['http', 'https']:
+                raise ValueError('source_url scheme must be http(s)')
             if not urlparse(data['source_url']).netloc:
-                raise ValueError('source_url must be a URL')
+                raise ValueError('source_url must have netloc set')
 
         r = self.patch('api/v1/holdings/' + hid, data=data)
         if r.status_code < 200 or r.status_code >= 300:
