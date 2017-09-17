@@ -3,6 +3,7 @@
 from flask import jsonify, request, abort
 from smuggler.api.v1 import bp
 from smuggler import app
+from smuggler.auth import requires_auth
 from smuggler.tasks import moss_create_track, moss_lock_holding
 from smuggler.tasks import moss_create_albumart
 from smuggler.impala_session import ImpalaSession
@@ -17,6 +18,7 @@ def api_version_info():
 
 @bp.route('/holding_groups/<uuid:hgid>/<uuid:hid>/music/<path:path>',
           methods=['POST', 'PUT'])
+@requires_auth
 def upload_track(hgid, hid, path):
     tempfile.tempdir = app.config['TEMP_DIR']
     session = ImpalaSession(app.config['IMPALA_SERVER']['uri'],
@@ -41,6 +43,7 @@ def upload_track(hgid, hid, path):
 
 
 @bp.route('/holdings/<uuid:hid>/albumart', methods=['POST', 'PUT'])
+@requires_auth
 def upload_albumart(hid):
     tempfile.tempdir = app.config['TEMP_DIR']
     f = tempfile.NamedTemporaryFile(delete=False, mode='wb')
@@ -58,12 +61,14 @@ def upload_albumart(hid):
 
 
 @bp.route('/holdings/<uuid:hid>/lock', methods=['POST', 'PUT'])
+@requires_auth
 def lock_holding(hid):
     moss_lock_holding(hid)
     return jsonify({'message': "ok"})
 
 
 @bp.route('/holdings/<uuid:hid>/source', methods=['POST'])
+@requires_auth
 def set_holding_torrent_hash(hid):
     session = ImpalaSession(app.config['IMPALA_SERVER']['uri'],
                             app.config['IMPALA_SERVER']['username'],
@@ -74,6 +79,7 @@ def set_holding_torrent_hash(hid):
 
 
 @bp.route('/torrents/<infohash>', methods=['GET', 'HEAD'])
+@requires_auth
 def get_torrent(infohash):
     infohash = infohash.lower()
     session = ImpalaSession(app.config['IMPALA_SERVER']['uri'],

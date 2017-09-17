@@ -9,3 +9,7 @@ IMPALA_SERVER = {'uri': "http://127.0.0.1:5000",
 # Null-padded ASCII for "digital"
 DEFAULT_UUIDS = {'format': '64696769-7461-6c00-0000-000000000000',
                  'stack':  '00000000-0000-0000-0000-000000000000'}
+
+ALLOWED_USERS = {
+    'admin': 'password',
+}
