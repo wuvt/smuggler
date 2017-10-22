@@ -24,8 +24,7 @@ def _put_resource(endpoint, fullpath=None, debug=True):
 
     if fullpath:
         with open(fullpath, 'rb') as fh:
-            data = fh.read()
-            r = requests.put(endpoint, data=data)
+            r = requests.put(endpoint, data=fh)
     else:
         r = requests.put(endpoint)
 
