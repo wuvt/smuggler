@@ -34,8 +34,7 @@ def _put_resource(endpoint, fullpath=None, debug=True):
 
     if fullpath:
         with open(fullpath, 'rb') as fh:
-            data = fh.read()
-            r = requests.put(endpoint, data=data, auth=SMUGGLER_AUTH)
+            r = requests.put(endpoint, data=fh, auth=SMUGGLER_AUTH)
     else:
         r = requests.put(endpoint, auth=SMUGGLER_AUTH)
 
