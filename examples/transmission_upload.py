@@ -82,8 +82,9 @@ if __name__ == "__main__":
     parser.add_argument('--smuggler-user', required=True, help="Smuggler user")
     parser.add_argument('--smuggler-password', required=True,
                         help="Smuggler password")
-    parser.add_argument('--transmission-port', type=int, required=True,
-                        help="Transmission RPC port (must be on localhost)")
+    parser.add_argument('--transmission-port', type=int, default=9091,
+                        help="Transmission RPC port (default 9091, must be on "
+                             "localhost)")
     parser.add_argument('--transmission-user', required=True,
                         help="Transmission user")
     parser.add_argument('--transmission-password', required=True,
