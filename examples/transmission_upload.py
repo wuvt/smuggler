@@ -77,17 +77,17 @@ def lock_album(server, auth, hid, debug=True):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--smuggler-url', required=True,
+    parser.add_argument('--smuggler-url', '--server', required=True,
                         help="URL to Smuggler server")
     parser.add_argument('--smuggler-user', required=True, help="Smuggler user")
     parser.add_argument('--smuggler-password', required=True,
                         help="Smuggler password")
-    parser.add_argument('--transmission-port', type=int, default=9091,
+    parser.add_argument('--transmission-port', '-P', type=int, default=9091,
                         help="Transmission RPC port (default 9091, must be on "
                              "localhost)")
-    parser.add_argument('--transmission-user', required=True,
+    parser.add_argument('--transmission-user', '-u', required=True,
                         help="Transmission user")
-    parser.add_argument('--transmission-password', required=True,
+    parser.add_argument('--transmission-password', '-p', required=True,
                         help="Transmission password")
     parser.add_argument('--limit-tracker', required=False,
                         help="Limit torrents to those on a specific tracker")
