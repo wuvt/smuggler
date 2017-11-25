@@ -112,7 +112,7 @@ if __name__ == "__main__":
     for t in torrents:
         f = t._fields
 
-        if f['downloadDir'].value not in args.directory:
+        if not os.path.samefile(f['downloadDir'].value, args.directory):
             continue
         if t.status not in ['seeding', 'stopped']:
             continue
