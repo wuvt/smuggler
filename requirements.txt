@@ -17,4 +17,4 @@ PyYAML==5.4
 requests==2.20.0
 six==1.10.0
 Unidecode==0.4.20
-Werkzeug==0.15.3
+Werkzeug==0.15.5
