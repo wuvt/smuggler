@@ -2,7 +2,7 @@ aniso8601==1.2.1
 beets==1.4.3
 click==6.7
 docopt==0.6.2
-Flask==1.0
+Flask==2.3.2
 Flask-RESTful==0.3.5
 itsdangerous==0.24
 jellyfish==0.5.6
